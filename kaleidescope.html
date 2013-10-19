@@ -8,42 +8,22 @@
 </body>
 
 <script src="script/bedrock.js"></script>
+<script src="script/canvasproxy.js"></script>
 <script>
 window.onload = function() {
-    var canvas = $.id('canvas');
-    var ctx = canvas.getContext('2d');
+    var cv = new CanvasProxy($.id('canvas'));
 
-    canvas.isMouseDown = false;
-
-    canvas.onmousedown = function() {
-        this.isMouseDown = true;
-    };
-
-    function cancelMouse() {
-        canvas.isMouseDown = false;
-        canvas.lastMousePos = null;
-        canvas.thisMousPos = null;
+    cv.onmousedown = function() {
+        this.moveTo(this.getMousePos());
     }
 
-    canvas.onmouseup = cancelMouse;
-    canvas.onmouseleave = cancelMouse;
-
-    canvas.onmousemove = function(evt) {
-        if (this.isMouseDown) {
-            canvas.lastMousePos = canvas.thisMousePos;
-            canvas.thisMousePos = new Point(evt.clientX, evt.clientY);
+    cv.eachFrame = function() {
+        if (cv.isMouseDown()) {
+            this.lineTo(this.getMousePos());
         }
     }
 
-    function draw() {
-        requestAnimationFrame(draw);
-
-        if (canvas.lastMousePos) {
-            console.log(canvas.lastMousePos, canvas.thisMousePos);
-        }
-    }
-
-    draw();
+    cv.startAnimation();
 };
 </script>
 
