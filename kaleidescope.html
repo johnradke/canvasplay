@@ -4,22 +4,36 @@
     <title>kaleidescope</title>
 </head>
 <body>
-    <canvas id="canvas" height="500" width="500" style="border:1px solid #aaa;"></canvas>
+    <canvas id="canvas" style="border:1px solid #aaa;"></canvas>
 </body>
 
 <script src="script/bedrock.js"></script>
 <script src="script/canvasproxy.js"></script>
 <script>
 window.onload = function() {
-    var cv = new CanvasProxy($.id('canvas'));
-
-    cv.onmousedown = function() {
-        this.moveTo(this.getMousePos());
-    }
+    var cv = new CanvasProxy($.id('canvas'), { fillScreen: true });
+    var lastPos = null;
 
     cv.eachFrame = function() {
-        if (cv.isMouseDown()) {
-            this.lineTo(this.getMousePos());
+        if (this.isMouseDown()) {
+            if (lastPos) {
+                var pos = this.getMousePos();
+                var width = this.width();
+                var height = this.height();
+                this.drawLine(lastPos.x, lastPos.y, pos.x, pos.y);
+                this.drawLine(width - lastPos.x, lastPos.y, width - pos.x, pos.y);
+                this.drawLine(lastPos.x, height - lastPos.y, pos.x, height - pos.y);
+                this.drawLine(width - lastPos.x, height - lastPos.y, width - pos.x, height - pos.y);
+
+                this.drawLine(lastPos.y, lastPos.x, pos.y, pos.x);
+                this.drawLine(width - lastPos.y, lastPos.x, width - pos.y, pos.x);
+                this.drawLine(lastPos.y, height - lastPos.x, pos.y, height - pos.x);
+                this.drawLine(width - lastPos.y, height - lastPos.x, width - pos.y, height - pos.x);
+            }
+            lastPos = this.getMousePos();
+        }
+        else {
+            lastPos = null;
         }
     }
 

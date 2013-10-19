@@ -7,11 +7,31 @@ Point.prototype.toString = function() {
     return "(" + this.x + ", " + this.y + ")";
 }
 
-function CanvasProxy(canvas) {
+function CanvasProxy(canvas, options) {
+    var options = options || {};
     var isMouseDown = false;
     var mousePos = null;
     var context = canvas.getContext('2d');
     var self = this;
+    var fillScreen = options.fillScreen || false;
+
+    if (fillScreen) {
+        function fill() {
+            canvas.width = document.body.clientWidth;
+            canvas.height= document.body.clientHeight;
+        }
+
+        window.addEventListener('resize', fill, false);
+
+        $.body.style.width = '100%';
+        $.body.style.height = '100%';
+        $.html.style.width = '100%';
+        $.html.style.height = '100%';
+        $.body.style.margin = 0;
+        $.body.style.overflow = 'hidden';
+        canvas.style.display = 'block';
+        fill();
+    }
 
     canvas.onmousemove = function(evt) {
         mousePos = new Point(evt.offsetX, evt.offsetY)
@@ -49,20 +69,21 @@ function CanvasProxy(canvas) {
         return mousePos;
     };
 
-    function getPoint(x, y) {
-        if (x instanceof Point)
-            return [x.x, x.y];
-
-        return [x, y];
+    this.moveTo = function(x, y) {
+        context.moveTo(x, y);
     }
 
-    this.moveTo = function(x, y) {
-        context.moveTo.apply(context, getPoint(x, y));
-    };
-
     this.lineTo = function(x, y) {
-        context.lineTo.apply(context, getPoint(x, y));
+        context.lineTo(x, y);
         context.stroke();
+    }
+
+    this.width = function() {
+        return canvas.width;
+    }
+
+    this.height = function() {
+        return canvas.height;
     }
 
     context.beginPath();
@@ -77,4 +98,9 @@ CanvasProxy.prototype.startAnimation = function() {
             self.eachFrame();
         })();
     }
+}
+
+CanvasProxy.prototype.drawLine = function(x1, y1, x2, y2) {
+    this.moveTo(x1, y1);
+    this.lineTo(x2, y2);
 }

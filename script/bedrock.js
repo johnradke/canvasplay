@@ -10,6 +10,8 @@ var $ = function() {
     }
 
     return {
-        id: _id
+        id: _id,
+        html: document.getElementsByTagName('html')[0],
+        body: document.getElementsByTagName('body')[0]
     };
 }();
