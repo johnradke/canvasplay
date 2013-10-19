@@ -1,7 +1,7 @@
 canvasplay
 ==========
 
-Demos for the &lt;canvas> element
+Me learning how to use the &lt;canvas> element. Hope to create some cool game demos eventually.
 
 kaleidescope
 ------------
