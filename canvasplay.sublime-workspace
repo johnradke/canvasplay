@@ -17,21 +17,26 @@
 			}
 		},
 		{
-			"file": "kaleidescope.html",
+			"file": "kaleidoscope.html",
 			"settings":
 			{
-				"buffer_size": 1088,
+				"buffer_size": 1440,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "var $ = function() {\n    var _ids = {};\n\n    function _id (id) {\n        if (!(id in _ids)) {\n            _ids[id] = document.getElementById(id);\n        }\n\n        return _ids[id];\n    }\n\n    return {\n        id: _id\n    };\n}();\n\nfunction Point (x, y) {\n    this.x = x;\n    this.y = y;\n}\n\nPoint.prototype.toString = function() {\n    return \"(\" + this.x + \", \" + this.y + \")\";\n}\n\n",
 			"file": "script/bedrock.js",
-			"file_size": 401,
-			"file_write_time": 130266824463940444,
 			"settings":
 			{
-				"buffer_size": 380,
+				"buffer_size": 341,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "script/canvasproxy.js",
+			"settings":
+			{
+				"buffer_size": 2459,
 				"line_ending": "Windows"
 			}
 		}
@@ -63,8 +68,10 @@
 	},
 	"file_history":
 	[
+		"/C/Users/John/code/canvasplay/kaleidescope.html",
 		"/C/Users/John/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
 		"/C/Users/John/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/John/code/canvasplay/canvasplay.sublime-project",
 		"/C/Users/John/AppData/Roaming/Sublime Text 3/Packages/User/HTML.sublime-settings"
 	],
 	"find":
@@ -100,7 +107,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -116,8 +123,8 @@
 						"selection":
 						[
 							[
-								116,
-								116
+								130,
+								130
 							]
 						],
 						"settings":
@@ -134,24 +141,26 @@
 				},
 				{
 					"buffer": 1,
-					"file": "kaleidescope.html",
+					"file": "kaleidoscope.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1088,
+						"buffer_size": 1440,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								154,
-								154
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage"
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -165,15 +174,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 380,
+						"buffer_size": 341,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								217,
-								217
+								329,
+								329
 							]
 						],
 						"settings":
@@ -182,6 +191,33 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "script/canvasproxy.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2459,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								690,
+								690
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 45.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -257,7 +293,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 214.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
