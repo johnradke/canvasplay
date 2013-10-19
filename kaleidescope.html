@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>kaleidescope</title>
+</head>
+<body>
+    <canvas id="canvas" height="500" width="500" style="border:1px solid #aaa;"></canvas>
+</body>
+
+<script src="script/bedrock.js"></script>
+<script>
+window.onload = function() {
+    var canvas = $.id('canvas');
+    var ctx = canvas.getContext('2d');
+
+    canvas.isMouseDown = false;
+
+    canvas.onmousedown = function() {
+        this.isMouseDown = true;
+    };
+
+    function cancelMouse() {
+        canvas.isMouseDown = false;
+        canvas.lastMousePos = null;
+        canvas.thisMousPos = null;
+    }
+
+    canvas.onmouseup = cancelMouse;
+    canvas.onmouseleave = cancelMouse;
+
+    canvas.onmousemove = function(evt) {
+        if (this.isMouseDown) {
+            canvas.lastMousePos = canvas.thisMousePos;
+            canvas.thisMousePos = new Point(evt.clientX, evt.clientY);
+        }
+    }
+
+    function draw() {
+        requestAnimationFrame(draw);
+
+        if (canvas.lastMousePos) {
+            console.log(canvas.lastMousePos, canvas.thisMousePos);
+        }
+    }
+
+    draw();
+};
+</script>
+
+</html>
