@@ -53,7 +53,7 @@ function CanvasProxy(canvas, options) {
     }
 
     canvas.onmousemove = function(evt) {
-        mousePos = new Point(evt.offsetX - translate.x, evt.offsetY - translate.y)
+        mousePos = new Point(evt.clientX - translate.x, evt.clientY - translate.y)
         if (typeof(self.onmousemove) === 'function') {
             self.onmousemove(evt);
         }
