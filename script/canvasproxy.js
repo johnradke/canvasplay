@@ -13,12 +13,13 @@ function CanvasProxy(canvas, options) {
     var mousePos = null;
     var context = canvas.getContext('2d');
     var self = this;
-    var fillScreen = options.fillScreen || false;
+    var translate = new Point(0, 0);
 
-    if (fillScreen) {
+    if (options.fillScreen) {
         function fill() {
             canvas.width = document.body.clientWidth;
             canvas.height= document.body.clientHeight;
+            setOrigin();
         }
 
         window.addEventListener('resize', fill, false);
@@ -33,8 +34,15 @@ function CanvasProxy(canvas, options) {
         fill();
     }
 
+    function setOrigin() {
+        if (options.centerOrigin) {
+            translate = new Point(canvas.width / 2, canvas.height / 2);
+            context.translate(translate.x, translate.y);
+        }
+    }
+
     canvas.onmousemove = function(evt) {
-        mousePos = new Point(evt.offsetX, evt.offsetY)
+        mousePos = new Point(evt.offsetX - translate.x, evt.offsetY - translate.y)
         if (typeof(self.onmousemove) === 'function') {
             self.onmousemove(evt);
         }
