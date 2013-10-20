@@ -15,26 +15,44 @@ window.onload = function() {
         fillScreen: true,
         centerOrigin: true
     });
-    var lastPos = null;
+
+    cv.lineWidth = 4;
+
+    var lineLength = 60;
+
+    var path = new MaxQueue(lineLength);
 
     cv.eachFrame = function() {
-        if (this.isMouseDown()) {
-            if (lastPos) {
-                var pos = this.getMousePos();
-                this.drawLine(lastPos.x, lastPos.y, pos.x, pos.y);
-                this.drawLine(-lastPos.x, lastPos.y, -pos.x, pos.y);
-                this.drawLine(lastPos.x, -lastPos.y, pos.x, -pos.y);
-                this.drawLine(-lastPos.x, -lastPos.y, -pos.x, -pos.y);
+        if (this.isMouseDown() && !this.getMousePos().equals(path[0])) {
+            var lastPos = null;
+            cv.clear();
 
-                this.drawLine(lastPos.y, lastPos.x, pos.y, pos.x);
-                this.drawLine(-lastPos.y, lastPos.x, -pos.y, pos.x);
-                this.drawLine(lastPos.y, -lastPos.x, pos.y, -pos.x);
-                this.drawLine(-lastPos.y, -lastPos.x, -pos.y, -pos.x);
+            if (path.length >= 2) {
+                var diagReflect = [0, 1, 1, 0, 0, 0];
+
+                function drawDiag() {
+                    cv.drawPath(path);
+                    cv.withTransform(diagReflect, function() {
+                        cv.drawPath(path);
+                    });
+                }
+
+                drawDiag();
+
+                cv.withScale(-1, 1, function() {
+                    drawDiag();
+                });
+
+                cv.withScale(1, -1, function() {
+                    drawDiag();
+                });
+
+                cv.withScale(-1, -1, function() {
+                    drawDiag();
+                });
             }
-            lastPos = this.getMousePos();
-        }
-        else {
-            lastPos = null;
+
+            path.Add(this.getMousePos());
         }
     }
 

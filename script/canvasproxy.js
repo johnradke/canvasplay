@@ -7,6 +7,10 @@ Point.prototype.toString = function() {
     return "(" + this.x + ", " + this.y + ")";
 }
 
+Point.prototype.equals = function (other) {
+    return other && this.x === other.x && this.y === other.y;
+}
+
 function CanvasProxy(canvas, options) {
     var options = options || {};
     var isMouseDown = false;
@@ -39,6 +43,14 @@ function CanvasProxy(canvas, options) {
             translate = new Point(canvas.width / 2, canvas.height / 2);
             context.translate(translate.x, translate.y);
         }
+    }
+
+    this.lineWidth = 1;
+
+    this.clear = function() {
+        context.translate(-translate.x, -translate.y);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.translate(translate.x, translate.y);
     }
 
     canvas.onmousemove = function(evt) {
@@ -77,24 +89,48 @@ function CanvasProxy(canvas, options) {
         return mousePos;
     };
 
-    this.moveTo = function(x, y) {
-        context.moveTo(x, y);
+    this.drawLine = function(x1, y1, x2, y2) {
+        this.drawPath([new Point(x1, y1), new Point(x2, y2)])
     }
 
-    this.lineTo = function(x, y) {
-        context.lineTo(x, y);
+    this.withScale = function(x, y, fn) {
+        context.save();
+        context.scale(x, y);
+        fn();
+        context.restore();
+    };
+
+    this.withTransform = function(array, fn) {
+        context.save();
+        context.transform.apply(context, array);
+        fn();
+        context.restore();
+    };
+
+    this.withRotate = function(degrees, fn) {
+        context.save();
+        context.rotate(degrees*Math.PI/180);
+        fn();
+        context.restore();
+    };
+
+    this.drawPath = function(path) {
+        context.beginPath();
+        context.moveTo(path[0].x, path[0].y);
+        for (var i = 1; i < path.length; i++) {
+            context.lineTo(path[i].x, path[i].y);
+        }
+        context.lineWidth = this.lineWidth;
         context.stroke();
-    }
+    };
 
     this.width = function() {
         return canvas.width;
-    }
+    };
 
     this.height = function() {
         return canvas.height;
-    }
-
-    context.beginPath();
+    };
 }
 
 CanvasProxy.prototype.startAnimation = function() {
@@ -106,9 +142,4 @@ CanvasProxy.prototype.startAnimation = function() {
             self.eachFrame();
         })();
     }
-}
-
-CanvasProxy.prototype.drawLine = function(x1, y1, x2, y2) {
-    this.moveTo(x1, y1);
-    this.lineTo(x2, y2);
 }

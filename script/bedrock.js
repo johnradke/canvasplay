@@ -15,3 +15,16 @@ var $ = function() {
         body: document.getElementsByTagName('body')[0]
     };
 }();
+
+function MaxQueue(maxSize) {
+    var start = 0;
+
+    this.Add = function(item) {
+        if (this.length == maxSize)
+            this.pop();
+
+        this.unshift(item);
+    }
+}
+
+MaxQueue.prototype = new Array()
