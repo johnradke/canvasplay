@@ -17,7 +17,13 @@ window.onload = function() {
     });
 
     cv.lineWidth = 50;
-    cv.setLinearGradient("red", "orange", "yellow", "green", "blue", "#800080");
+    var trans = .5;
+    cv.setLinearGradient(rgba(255,0,0,trans),
+        rgba(255,165,0,trans),
+        rgba(255, 255, 0, trans), 
+        rgba(0, 255, 0, trans),
+        rgba(0, 0, 255, trans),
+        rgba(127, 0, 127, trans));
 
     var lineLength = 60;
 

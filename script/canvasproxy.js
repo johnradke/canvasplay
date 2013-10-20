@@ -157,3 +157,7 @@ CanvasProxy.prototype.startAnimation = function() {
         })();
     }
 }
+
+function rgba(r, g, b, a) {
+    return "rgba(" + Array.prototype.join.call(arguments, ", ") + ")";
+}
