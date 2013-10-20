@@ -122,6 +122,8 @@ function CanvasProxy(canvas, options) {
         }
         ctx.lineWidth = this.lineWidth;
         ctx.strokeStyle = strokeStyle;
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
         ctx.stroke();
     };
 
