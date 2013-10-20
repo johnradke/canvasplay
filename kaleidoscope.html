@@ -16,16 +16,43 @@ window.onload = function() {
         centerOrigin: true
     });
 
-    cv.lineWidth = 50;
+    cv.lineWidth = 30;
     var trans = .5;
     cv.setLinearGradient(rgba(255,0,0,trans),
         rgba(255,165,0,trans),
         rgba(255, 255, 0, trans), 
         rgba(0, 255, 0, trans),
         rgba(0, 0, 255, trans),
-        rgba(127, 0, 127, trans));
+        rgba(127, 0, 127, trans)
+    );
 
-    var lineLength = 60;
+    // [x, 0, 0, y, 0, 0] scales by (x, y)
+    // [0, x, y, 0, 0, 0] scales by (y, x)
+    var mirrorTransforms = [
+        [1, 0, 0, 1, 0, 0],
+        [0, 1, 1, 0, 0, 0],
+        [-1, 0, 0, 1, 0, 0],
+        [0, -1, 1, 0, 0, 0],
+        [-1, 0, 0, -1, 0, 0],
+        [0, -1, -1, 0, 0, 0],
+        [1, 0, 0, -1, 0, 0],
+        [0, 1, -1, 0, 0, 0]
+    ];
+
+    var sin45 = cos45 = Math.sqrt(2)/2;
+    var rotateTransforms = [
+        [1, 0, 0, 1, 0, 0],
+        [cos45, sin45, -sin45, cos45, 0, 0],
+        [0, 1, -1, 0, 0, 0],
+        [-cos45, sin45, -sin45, -cos45, 0, 0],
+        [-1, 0, 0, -1, 0, 0],
+        [-cos45, -sin45, sin45, -cos45, 0, 0],
+        [0, -1, 1, 0, 0, 0],
+        [cos45, -sin45, sin45, cos45, 0, 0]
+
+    ];
+
+    var lineLength = 15;
 
     var path = new MaxQueue(lineLength);
 
@@ -35,22 +62,12 @@ window.onload = function() {
             cv.clear();
 
             if (path.length >= 2) {
-                // [x, 0, 0, y, 0, 0] scales by (x, y)
-                // [0, x, y, 0, 0, 0] scales by (y, x)
-                var transforms = [
-                    [1, 0, 0, 1, 0, 0],
-                    [0, 1, 1, 0, 0, 0],
-                    [-1, 0, 0, 1, 0, 0],
-                    [0, -1, 1, 0, 0, 0],
-                    [-1, 0, 0, -1, 0, 0],
-                    [0, -1, -1, 0, 0, 0],
-                    [1, 0, 0, -1, 0, 0],
-                    [0, 1, -1, 0, 0, 0]
-                ];
-
-                transforms.forEach(function(transform) {
+                rotateTransforms.forEach(function(transform) {
                     cv.withTransform(transform, function() {
                         cv.drawPath(path);
+                        cv.withScale(-1, 1, function() {
+                            cv.drawPath(path);
+                        })
                     });
                 });
             }
