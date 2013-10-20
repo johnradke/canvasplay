@@ -15,7 +15,7 @@ function CanvasProxy(canvas, options) {
     var options = options || {};
     var isMouseDown = false;
     var mousePos = null;
-    var context = canvas.getContext('2d');
+    var ctx = canvas.getContext('2d');
     var self = this;
     var translate = new Point(0, 0);
 
@@ -41,16 +41,16 @@ function CanvasProxy(canvas, options) {
     function setOrigin() {
         if (options.centerOrigin) {
             translate = new Point(canvas.width / 2, canvas.height / 2);
-            context.translate(translate.x, translate.y);
+            ctx.translate(translate.x, translate.y);
         }
     }
 
     this.lineWidth = 1;
 
     this.clear = function() {
-        context.translate(-translate.x, -translate.y);
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.translate(translate.x, translate.y);
+        ctx.translate(-translate.x, -translate.y);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.translate(translate.x, translate.y);
     }
 
     canvas.onmousemove = function(evt) {
@@ -94,35 +94,49 @@ function CanvasProxy(canvas, options) {
     }
 
     this.withScale = function(x, y, fn) {
-        context.save();
-        context.scale(x, y);
+        ctx.save();
+        ctx.scale(x, y);
         fn();
-        context.restore();
+        ctx.restore();
     };
 
     this.withTransform = function(array, fn) {
-        context.save();
-        context.transform.apply(context, array);
+        ctx.save();
+        ctx.transform.apply(ctx, array);
         fn();
-        context.restore();
+        ctx.restore();
     };
 
     this.withRotate = function(degrees, fn) {
-        context.save();
-        context.rotate(degrees*Math.PI/180);
+        ctx.save();
+        ctx.rotate(degrees*Math.PI/180);
         fn();
-        context.restore();
+        ctx.restore();
     };
 
     this.drawPath = function(path) {
-        context.beginPath();
-        context.moveTo(path[0].x, path[0].y);
+        ctx.beginPath();
+        ctx.moveTo(path[0].x, path[0].y);
         for (var i = 1; i < path.length; i++) {
-            context.lineTo(path[i].x, path[i].y);
+            ctx.lineTo(path[i].x, path[i].y);
         }
-        context.lineWidth = this.lineWidth;
-        context.stroke();
+        ctx.lineWidth = this.lineWidth;
+        ctx.strokeStyle = strokeStyle;
+        ctx.stroke();
     };
+
+    var strokeStyle = '';
+
+    this.setLinearGradient = function() {
+        var gradient=ctx.createLinearGradient(-canvas.width / 2, -canvas.height / 2, canvas.width / 2, canvas.height / 2);
+        for (var i = 0; i < arguments.length; i ++) {
+            var stop = (1.0 / (arguments.length + 1) * (i + 1)).toString();
+            gradient.addColorStop(stop, arguments[i]);
+            console.log(stop)
+        }
+
+        strokeStyle = gradient;
+    }
 
     this.width = function() {
         return canvas.width;

@@ -16,7 +16,8 @@ window.onload = function() {
         centerOrigin: true
     });
 
-    cv.lineWidth = 4;
+    cv.lineWidth = 50;
+    cv.setLinearGradient("red", "orange", "yellow", "green", "blue", "#800080");
 
     var lineLength = 60;
 
@@ -28,27 +29,23 @@ window.onload = function() {
             cv.clear();
 
             if (path.length >= 2) {
-                var diagReflect = [0, 1, 1, 0, 0, 0];
+                // [x, 0, 0, y, 0, 0] scales by (x, y)
+                // [0, x, y, 0, 0, 0] scales by (y, x)
+                var transforms = [
+                    [1, 0, 0, 1, 0, 0],
+                    [0, 1, 1, 0, 0, 0],
+                    [-1, 0, 0, 1, 0, 0],
+                    [0, -1, 1, 0, 0, 0],
+                    [-1, 0, 0, -1, 0, 0],
+                    [0, -1, -1, 0, 0, 0],
+                    [1, 0, 0, -1, 0, 0],
+                    [0, 1, -1, 0, 0, 0]
+                ];
 
-                function drawDiag() {
-                    cv.drawPath(path);
-                    cv.withTransform(diagReflect, function() {
+                transforms.forEach(function(transform) {
+                    cv.withTransform(transform, function() {
                         cv.drawPath(path);
                     });
-                }
-
-                drawDiag();
-
-                cv.withScale(-1, 1, function() {
-                    drawDiag();
-                });
-
-                cv.withScale(1, -1, function() {
-                    drawDiag();
-                });
-
-                cv.withScale(-1, -1, function() {
-                    drawDiag();
                 });
             }
 
