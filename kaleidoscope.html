@@ -4,7 +4,7 @@
     <title>kaleidescope</title>
 </head>
 <body>
-    <canvas id="canvas" style="border:1px solid #aaa;"></canvas>
+    <canvas id="canvas"></canvas>
 </body>
 
 <script src="script/bedrock.js"></script>
@@ -16,7 +16,7 @@ window.onload = function() {
         centerOrigin: true
     });
 
-    cv.lineWidth = 30;
+    cv.lineWidth = 100;
     var trans = .5;
     cv.setLinearGradient(rgba(255,0,0,trans),
         rgba(255,165,0,trans),

@@ -33,7 +33,6 @@ function CanvasProxy(canvas, options) {
         $.html.style.width = '100%';
         $.html.style.height = '100%';
         $.body.style.margin = 0;
-        $.body.style.overflow = 'hidden';
         canvas.style.display = 'block';
         fill();
     }
@@ -66,6 +65,19 @@ function CanvasProxy(canvas, options) {
             self.onmousedown(evt);
         }
     };
+
+    canvas.addEventListener('touchstart', function() {
+        isMouseDown = true;
+    });
+
+    canvas.addEventListener('touchmove', function(evt) {
+        var touch = evt.targetTouches[0];
+        mousePos = new Point(touch.pageX - translate.x, touch.pageY - translate.y)
+    });
+
+    canvas.addEventListener('touchend', function() {
+        isMouseDown = false;
+    })
 
     canvas.onmouseup = function(evt) {
         isMouseDown = false;
@@ -134,7 +146,6 @@ function CanvasProxy(canvas, options) {
         for (var i = 0; i < arguments.length; i ++) {
             var stop = (1.0 / (arguments.length + 1) * (i + 1)).toString();
             gradient.addColorStop(stop, arguments[i]);
-            console.log(stop)
         }
 
         strokeStyle = gradient;
@@ -151,6 +162,9 @@ function CanvasProxy(canvas, options) {
 
 CanvasProxy.prototype.startAnimation = function() {
     var self = this;
+
+    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+        window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
     if (typeof(self.eachFrame) === 'function') {
         (function f() {
