@@ -28,3 +28,29 @@ function MaxQueue(maxSize) {
 }
 
 MaxQueue.prototype = new Array()
+
+Object.defineProperties(Object.prototype, { extend: { enumerable: false, value: function(options) {
+    for (var opt in options) {
+        Object.defineProperty(this.prototype, opt, { enumerable: false, value: options[opt] });
+    }
+}}});
+
+Object.extend({
+    map: function(func) {
+        var newObj = {};
+        for (var o in this) {
+            newObj[o] = func(this[o]);
+        }
+        return newObj;
+    }
+});
+
+Array.extend({
+    reduce: function(func) {
+        var best = this[0];
+        for (var i = 1; i < this.length; i++) {
+            best = func(best, this[i]);
+        }
+        return best;
+    }
+});
