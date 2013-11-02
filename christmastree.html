@@ -1,0 +1,22 @@
+<html>
+<head>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500">
+</canvas>
+<script src="script/bedrock.js"></script>
+<script src="script/canvasproxy.js"></script>
+<script>
+$.go(function() {
+    var cv = new CanvasProxy($.id('canvas'), { centerOrigin: true});
+
+    cv.eachFrame = function() {
+        cv.drawPath([{x: 0, y: -250}, {x: 0, y:250}]);
+
+    };
+
+    cv.startAnimation();
+})
+</script>
+</body>
+</html>
