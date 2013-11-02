@@ -19,6 +19,13 @@ function CanvasProxy(canvas, options) {
     var self = this;
     var translate = new Point(0, 0);
 
+    function setOrigin() {
+        if (options.centerOrigin) {
+            translate = new Point(canvas.width / 2, canvas.height / 2);
+            ctx.translate(translate.x, translate.y);
+        }
+    }
+
     if (options.fillScreen) {
         function fill() {
             canvas.width = document.body.clientWidth;
@@ -36,12 +43,8 @@ function CanvasProxy(canvas, options) {
         canvas.style.display = 'block';
         fill();
     }
-
-    function setOrigin() {
-        if (options.centerOrigin) {
-            translate = new Point(canvas.width / 2, canvas.height / 2);
-            ctx.translate(translate.x, translate.y);
-        }
+    else {
+        setOrigin();
     }
 
     this.lineWidth = 1;

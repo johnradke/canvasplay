@@ -9,10 +9,18 @@ var $ = function() {
         return _ids[id];
     }
 
+    var _html = document.getElementsByTagName('html')[0];
+    var _body = document.getElementsByTagName('body')[0];
+
+    function _go (fn) {
+        window.onload = fn;
+    }
+
     return {
         id: _id,
-        html: document.getElementsByTagName('html')[0],
-        body: document.getElementsByTagName('body')[0]
+        html: _html,
+        body: _body,
+        go: _go
     };
 }();
 
