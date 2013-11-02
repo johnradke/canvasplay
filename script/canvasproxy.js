@@ -3,9 +3,9 @@ function Point (x, y) {
     this.y = y;
 }
 
-Point.prototype.toString = function() {
+Point.extend({toString: function() {
     return "(" + this.x + ", " + this.y + ")";
-}
+}})
 
 Point.prototype.equals = function (other) {
     return other && this.x === other.x && this.y === other.y;
@@ -128,6 +128,15 @@ function CanvasProxy(canvas, options) {
         fn();
         ctx.restore();
     };
+
+    this.drawCircle = function(x, y, r, color) {
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, 2*Math.PI);
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.stroke();
+    }
 
     this.drawPath = function(path) {
         ctx.beginPath();

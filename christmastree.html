@@ -10,9 +10,23 @@
 $.go(function() {
     var cv = new CanvasProxy($.id('canvas'), { centerOrigin: true});
 
-    cv.eachFrame = function() {
-        cv.drawPath([{x: 0, y: -250}, {x: 0, y:250}]);
+    function drawCircle (ms) {
+        var speed = 2000; // ms per cycle
+        var frac = (ms % speed) / speed;
 
+        var x = 200 * Math.sin(frac * 2 * Math.PI);
+        var y = 50 * Math.cos(frac * 2 * Math.PI);
+        var color = rgba(0, Math.floor(127 * (Math.cos(frac * 2 * Math.PI) + 1)), 0, 1)
+        //console.log(color);
+
+        cv.drawCircle(x, y, 20, color);
+    }
+
+    cv.eachFrame = function() {
+        cv.clear();
+        cv.drawPath([{x: 0, y: -250}, {x: 0, y:250}]);
+        var ms = new Date().getTime();
+        drawCircle(ms);
     };
 
     cv.startAnimation();
