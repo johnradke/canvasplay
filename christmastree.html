@@ -6,27 +6,83 @@
 </canvas>
 <script src="script/bedrock.js"></script>
 <script src="script/canvasproxy.js"></script>
-<script>
+<script >
+
 $.go(function() {
     var cv = new CanvasProxy($.id('canvas'), { centerOrigin: true});
 
-    function drawCircle (ms) {
-        var speed = 2000; // ms per cycle
-        var frac = (ms % speed) / speed;
+    function circle(startOffset, height, radius, rgbArray) {
+        var speed = 10000; // ms per cycle
+        
+        function _getFrac (ms) {
+            return ((ms + (startOffset / 1000 * speed)) % speed) / speed;
+        }
 
-        var x = 200 * Math.sin(frac * 2 * Math.PI);
-        var y = 50 * Math.cos(frac * 2 * Math.PI);
-        var color = rgba(0, Math.floor(127 * (Math.cos(frac * 2 * Math.PI) + 1)), 0, 1)
-        //console.log(color);
+        function _draw(ms) {
+            var frac = _getFrac(ms);
+            var x = radius * Math.sin(frac * 2 * Math.PI);
+            var y = -height + (radius/4) * Math.cos(frac * 2 * Math.PI);
 
-        cv.drawCircle(x, y, 20, color);
+            var newArray = rgbArray.mult(100 + Math.floor(50 * (Math.cos(frac * 2 * Math.PI) + 1)));
+
+            var color = rgba(newArray[0], newArray[1], newArray[2], 1)
+            //console.log(color);
+
+            cv.drawCircle(x, y, 5, color, true);
+        };
+
+        function _getZ(ms) {
+            return Math.round(1000*Math.cos(_getFrac(ms) * 2 * Math.PI));
+        }
+
+        return {
+            draw: _draw,
+            getZ: _getZ
+        }
     }
+
+    var stem = {
+        draw: function() {
+            cv.lineWidth = 10;
+            cv.drawPath([{x: 0, y: -240}, {x: 0, y:240}], "brown");
+        },
+        getZ: function() {
+            return 0;
+        }
+    }
+
+    var sprites = [stem];
+
+    $.range(-200, 240, 10).forEach(function(height){
+        $.range((250 - height) / 10).forEach(function(obj) {
+            var color = [0, 1, 0];
+            var rand = $.rand(20);
+
+            if (rand === 6) {
+                color = [1, 0, 0];
+            }
+            if (rand === 5) {
+                color = [0, 0, 1];
+            }
+            if (rand === 7) {
+                color = [1, 0, 1];
+            }
+
+            sprites.push(circle($.rand(1000), height, (250 - height) / 3, color));
+        });
+    });
 
     cv.eachFrame = function() {
         cv.clear();
-        cv.drawPath([{x: 0, y: -250}, {x: 0, y:250}]);
+        
         var ms = new Date().getTime();
-        drawCircle(ms);
+        sprites = sprites.sort(function(a, b) {
+            return a.getZ(ms) - b.getZ(ms);
+        });
+
+        sprites.forEach(function(sprite) {
+            sprite.draw(ms);
+        });
     };
 
     cv.startAnimation();

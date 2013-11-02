@@ -1,3 +1,4 @@
+
 var $ = function() {
     var _ids = {};
 
@@ -16,11 +17,39 @@ var $ = function() {
         window.onload = fn;
     }
 
+    function _range(start, stop, step) {
+        if (!stop) {
+            stop = start;
+            start = 0;
+        }
+
+        if (!step) step = 1;
+        
+        var r = [];
+
+        for (var i = start; i <= stop; i += step) {
+            r.push(i);
+        }
+
+        return r;
+    }
+
+    function _rand(start, stop) {
+        if (!stop) {
+            stop = start;
+            start = 0;
+        }
+
+        return Math.floor(Math.random() * (stop - start) + start);
+    }
+
     return {
         id: _id,
         html: _html,
         body: _body,
-        go: _go
+        go: _go,
+        range: _range,
+        rand: _rand
     };
 }();
 
@@ -60,5 +89,10 @@ Array.extend({
             best = func(best, this[i]);
         }
         return best;
+    },
+    mult: function(multiplier) {
+        return this.map(function(n){
+            return n * multiplier;
+        });
     }
 });

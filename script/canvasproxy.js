@@ -129,23 +129,26 @@ function CanvasProxy(canvas, options) {
         ctx.restore();
     };
 
-    this.drawCircle = function(x, y, r, color) {
+    this.drawCircle = function(x, y, r, color, fill) {
         ctx.beginPath();
         ctx.arc(x, y, r, 0, 2*Math.PI);
         ctx.strokeStyle = color;
-        ctx.fillStyle = color;
-        ctx.fill();
+        ctx.lineWidth = 1;
+        if (fill) {
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
         ctx.stroke();
     }
 
-    this.drawPath = function(path) {
+    this.drawPath = function(path, color) {
         ctx.beginPath();
         ctx.moveTo(path[0].x, path[0].y);
         for (var i = 1; i < path.length; i++) {
             ctx.lineTo(path[i].x, path[i].y);
         }
         ctx.lineWidth = this.lineWidth;
-        ctx.strokeStyle = strokeStyle;
+        ctx.strokeStyle = color;
         ctx.lineJoin = 'round';
         ctx.lineCap = 'round';
         ctx.stroke();
@@ -189,3 +192,4 @@ CanvasProxy.prototype.startAnimation = function() {
 function rgba(r, g, b, a) {
     return "rgba(" + Array.prototype.join.call(arguments, ", ") + ")";
 }
+
