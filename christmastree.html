@@ -12,7 +12,7 @@ $.go(function() {
     var cv = new CanvasProxy($.id('canvas'), { centerOrigin: true});
 
     function circle(startOffset, height, radius, rgbArray) {
-        var speed = 10000; // ms per cycle
+        var speed = 5000; // ms per cycle
         
         function _getFrac (ms) {
             return ((ms + (startOffset / 1000 * speed)) % speed) / speed;
@@ -26,7 +26,6 @@ $.go(function() {
             var newArray = rgbArray.mult(100 + Math.floor(50 * (Math.cos(frac * 2 * Math.PI) + 1)));
 
             var color = rgba(newArray[0], newArray[1], newArray[2], 1)
-            //console.log(color);
 
             cv.drawCircle(x, y, 5, color, true);
         };
@@ -44,7 +43,7 @@ $.go(function() {
     var stem = {
         draw: function() {
             cv.lineWidth = 10;
-            cv.drawPath([{x: 0, y: -240}, {x: 0, y:240}], "brown");
+            cv.drawPath([{x: 0, y: -240}, {x: 0, y:240}], rgba(127, 82, 23, 1));
         },
         getZ: function() {
             return 0;
@@ -53,8 +52,9 @@ $.go(function() {
 
     var sprites = [stem];
 
-    $.range(-200, 240, 10).forEach(function(height){
-        $.range((250 - height) / 10).forEach(function(obj) {
+    $.range(-200, 240).forEach(function(height){
+        var offsets = [];
+        $.range((250 - height) / 50).forEach(function(obj) {
             var color = [0, 1, 0];
             var rand = $.rand(20);
 
@@ -68,7 +68,16 @@ $.go(function() {
                 color = [1, 0, 1];
             }
 
-            sprites.push(circle($.rand(1000), height, (250 - height) / 3, color));
+            var offset = $.rand(1000);
+
+            // keep the offsets distinct to prevent z-fighting
+            while (offsets.indexOf(offset) > -1) {
+                offset = $.rand(1000);
+            }
+
+            offsets.push(offset);
+
+            sprites.push(circle(offset, height, (250 - height) / 2.5, color));
         });
     });
 
