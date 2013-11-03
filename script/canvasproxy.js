@@ -154,16 +154,15 @@ function CanvasProxy(canvas, options) {
         ctx.stroke();
     };
 
-    var strokeStyle = '';
-
-    this.setLinearGradient = function() {
+    this.getLinearGradient = function() {
         var gradient=ctx.createLinearGradient(-canvas.width / 2, -canvas.height / 2, canvas.width / 2, canvas.height / 2);
+        
         for (var i = 0; i < arguments.length; i ++) {
             var stop = (1.0 / (arguments.length + 1) * (i + 1)).toString();
             gradient.addColorStop(stop, arguments[i]);
         }
 
-        strokeStyle = gradient;
+        return gradient;
     }
 
     this.width = function() {
