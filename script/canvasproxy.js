@@ -141,14 +141,22 @@ function CanvasProxy(canvas, options) {
         ctx.stroke();
     }
 
-    this.drawPath = function(path, color) {
+    this.drawPath = function(path, options) {
         ctx.beginPath();
         ctx.moveTo(path[0].x, path[0].y);
         for (var i = 1; i < path.length; i++) {
             ctx.lineTo(path[i].x, path[i].y);
         }
-        ctx.lineWidth = this.lineWidth;
-        ctx.strokeStyle = color;
+
+        if (options.lineWidth)
+        {
+            ctx.lineWidth = options.lineWidth;
+        }
+
+        if (options.color) {
+            ctx.strokeStyle = options.color;            
+        }
+
         ctx.lineJoin = 'round';
         ctx.lineCap = 'round';
         ctx.stroke();
@@ -156,7 +164,7 @@ function CanvasProxy(canvas, options) {
 
     this.getLinearGradient = function() {
         var gradient=ctx.createLinearGradient(-canvas.width / 2, -canvas.height / 2, canvas.width / 2, canvas.height / 2);
-        
+
         for (var i = 0; i < arguments.length; i ++) {
             var stop = (1.0 / (arguments.length + 1) * (i + 1)).toString();
             gradient.addColorStop(stop, arguments[i]);
