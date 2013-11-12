@@ -108,6 +108,15 @@ function CanvasProxy(canvas, options) {
         this.drawPath([new Point(x1, y1), new Point(x2, y2)])
     }
 
+    this.setPixel = function(x, y, color) {
+        var d = ctx.createImageData(1, 1);
+        d.data[0] = color.r;
+        d.data[1] = color.g;
+        d.data[2] = color.b;
+        d.data[3] = color.a;
+        ctx.putImageData(d, x, y);
+    };
+
     this.withScale = function(x, y, fn) {
         ctx.save();
         ctx.scale(x, y);
@@ -191,7 +200,7 @@ CanvasProxy.prototype.startAnimation = function() {
     if (typeof(self.eachFrame) === 'function') {
         (function f() {
             requestAnimationFrame(f);
-            self.eachFrame();
+            self.eachFrame(new Date().getTime());
         })();
     }
 }

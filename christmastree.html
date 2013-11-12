@@ -87,10 +87,9 @@ $.go(function() {
         });
     });
 
-    cv.eachFrame = function() {
+    cv.eachFrame = function(ms) {
         cv.clear();
         
-        var ms = new Date().getTime();
         sprites = sprites.sort(function(a, b) {
             return a.getZ(ms) - b.getZ(ms);
         });
