@@ -1,7 +1,9 @@
 canvasplay
 ==========
 
-Me learning how to use the &lt;canvas> element. Hope to create some cool game demos eventually.
+Working demos here: http://www.johnradke.net/canvasplay/
+
+Me learning how to use the &lt;canvas> element.
 
 Gradually building a couple libraries as I go:
 
@@ -13,7 +15,7 @@ There are definitely better libraries already out there, but this is a good way 
 Kaleidoscope
 ------------
 
-click & drag to draw a path onscreen, and your drawing will be mirrored a bunch of times. did something like this once in VB6 a long time ago...
+click &amp; drag to draw a path onscreen, and your drawing will be mirrored a bunch of times. did something like this once in VB6 a long time ago...
 
 Christmas Tree
 --------------
