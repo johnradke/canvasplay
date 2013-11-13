@@ -20,7 +20,7 @@ Christmas Tree
 
 Spinning Christmas tree. Playing with faking 3D using overlapping (Z-ordering), foreshortening (squeezing the height), and shading (farther back is darker).
 
-Tetrominoes
------------
+Tetrominoes (in progress)
+-------------------------
 
 Tetris-like game. Using grayscale kinda for the hell of it.
