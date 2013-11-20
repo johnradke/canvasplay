@@ -1,33 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>kaleidescope</title>
+    <title>tetrominoes</title>
 </head>
 <body>
-    <canvas id="canvas" height="500" width="500"></canvas>
+    <canvas id="canvas"></canvas>
 </body>
 
 <script src="script/bedrock.js"></script>
-<script src="script/canvasproxy.js"></script>
+<script src="script/graybit.js"></script>
 <script>
-    var cv = new CanvasProxy($.id('canvas'));
+    var gb = new GrayBit($.id('canvas'), 10, 10, 32);
 
-    cv.eachFrame = function() {
-        cv.setPixel($.rand(500), $.rand(500), {r: 0, g: 0, b: 0, a: 255});
-        cv.setPixel($.rand(500), $.rand(500), {r: 0, g: 0, b: 0, a: 255});
-        cv.setPixel($.rand(500), $.rand(500), {r: 0, g: 0, b: 0, a: 255});
-        cv.setPixel($.rand(500), $.rand(500), {r: 0, g: 0, b: 0, a: 255});
-        cv.setPixel($.rand(500), $.rand(500), {r: 0, g: 0, b: 0, a: 255});
-        cv.setPixel($.rand(500), $.rand(500), {r: 0, g: 0, b: 0, a: 255});
-        cv.setPixel($.rand(500), $.rand(500), {r: 0, g: 0, b: 0, a: 255});
-        cv.setPixel($.rand(500), $.rand(500), {r: 0, g: 0, b: 0, a: 255});
-        cv.setPixel($.rand(500), $.rand(500), {r: 0, g: 0, b: 0, a: 255});
-        cv.setPixel($.rand(500), $.rand(500), {r: 0, g: 0, b: 0, a: 255});
-        cv.setPixel($.rand(500), $.rand(500), {r: 0, g: 0, b: 0, a: 255});
-        cv.setPixel($.rand(500), $.rand(500), {r: 0, g: 0, b: 0, a: 255});
-        cv.setPixel($.rand(500), $.rand(500), {r: 0, g: 0, b: 0, a: 255});
-        cv.setPixel($.rand(500), $.rand(500), {r: 0, g: 0, b: 0, a: 255});
-    };
-    cv.startAnimation();
+    gb.setPixel(0, 0, 0);
+    gb.setPixel(2, 3, 1);
+    gb.setPixel(0, 2, 2);
+    gb.setPixel(0, 3, 3);
 </script>
 </html>
